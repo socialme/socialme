@@ -1,0 +1,19 @@
+Welcome to SocialMe, the free (software) social network*.
+
+SocialMe may be the stupidest idea on Earth: "WTF we need ANOTHER social 
+network?" and peanuts thrown at us.
+
+This is maybe your basis for your beloved, no-bloat, personal social 
+network. (Although it won't be fun without some friends, though.)
+
+Technology used:
+o Facebox (http://github.com/defunkt/facebox)
+o YUI Compressor (http://developer.yahoo.com/)
+o jQuery (http://jquery.com/)
+o web.py (http://webpy.org/)
+
+*That's how GNU geeks say: "the free thingy that does foo and bar"**...
+**But not if this is the "Ultimate Destiny of Free Software of Killing 
+Non-Free Software"***. Only one WILL WIN! We wonder who will****.
+***From Lemon Demon's "The Ultimate Showdown".
+****We're being silly, and funny :)
