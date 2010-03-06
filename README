@@ -1,19 +1,14 @@
-Welcome to SocialMe, the free (software) social network*.
+SocialMe is a PHP social network, built on nothing at all. All from 
+scratch, using jQuery to create a neat social network.
 
-SocialMe may be the stupidest idea on Earth: "WTF we need ANOTHER social 
-network?" and peanuts thrown at us.
+SocialMe is licensed under the Apache License 2.0 and may contain code 
+under other licenses. The code we're using should be compatible with it.
 
-This is maybe your basis for your beloved, no-bloat, personal social 
-network. (Although it won't be fun without some friends, though.)
+Requirements:
+	* PHP
+	* Web server (lighttpd and nginx for high-profile)
+	* MySQL or PostgreSQL database
 
-Technology used:
-o Facebox (http://github.com/defunkt/facebox)
-o YUI Compressor (http://developer.yahoo.com/)
-o jQuery (http://jquery.com/)
-o web.py (http://webpy.org/)
+See INSTALL for installing on your server.
 
-*That's how GNU geeks say: "the free thingy that does foo and bar"**...
-**But not if this is the "Ultimate Destiny of Free Software of Killing 
-Non-Free Software"***. Only one WILL WIN! We wonder who will****.
-***From Lemon Demon's "The Ultimate Showdown".
-****We're being silly, and funny :)
+SocialMe is anti-IE6! It is also gender-netural.

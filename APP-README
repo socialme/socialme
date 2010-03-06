@@ -1,0 +1,13 @@
+Applications are implemented depending on type:
+	* Web (on SocialMe): OpenSocial application
+	* Web (non-SocialMe): OAuth HMAC-SHA1
+	* Desktop: OAuth HMAC-SHA1
+
+(Looking like MySpace yet?)
+
+But, here's the URLs to keep in mind for OAuth:
+	* '/oauth/request_token.php' - request a oauth_request_token
+	* '/login.php?type=oauth&token=blahblah' - login user
+	* '/oauth/upgrade_token.php' - upgrade request_token to access_token
+
+(One URL is like Facebook)
