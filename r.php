@@ -1,7 +1,8 @@
 <?php
 
-require_once('config.php');
-require('db.php');
+include('config.php');
+include('db.php');
+include('common.php');
 
 sm_init_db();
 
@@ -9,7 +10,7 @@ if ($_POST['name']) {
 	// It's an account request.
 	// captcha check.
 	session_start();
-	if ($_COOKIE['sm_not_old']) {
+	if ($_COOKIE['sm_not_old'] == 'yes') {
 		sm_raise_err("You are not old enough. You must be 13+.");
 		sm_die();
 	}
@@ -27,15 +28,26 @@ if ($_POST['name']) {
 		// Estimate age
 		$uage = $regyea - $uyea;
 		if ($umon == $regmon) {
-			if ($uday == $regday) {
+			// We still need to verify the age fully, because we don't want 12-years
+			// on social networks before they're 13!
+			if ($uday >= $regday) {
+				$uage++;
+			}
+		} else {
+			if ($umon > $regmon) {
 				$uage++;
 			}
 		}
 		// Check age
 		if ($uage < 13) {
 			// In days, when can the user come back?
-			$can_be_back = 13 - $uage;
-			$can_be_back = $can_be_back * 365;
+			if ($uage == 12) {
+				$can_be_back = $umon - $regmon;
+				$can_be_back *= 60;
+			} else {
+				$can_be_back = 13 - $uage;
+				$can_be_back *= 365;
+			}
 			sm_raise_err("You are not 13 years of age or older. Come back soon!");
 			setcookie('sm_not_old', 'yes', time()+60*60*24*$can_be_back);
 			sm_die();
@@ -44,7 +56,10 @@ if ($_POST['name']) {
 		// No... wait! SocialMe is gender netural!
 		// It's multisex enabled!
 
-		$sql_values = "('" . $_POST['name'] . "', '" . $_POST['mail'] . "', " . $uage . ", 0)";
+		// Hash password
+		$hashed_pass = sha256($_POST['pass'] . $sm_secret);
+
+		$sql_values = "('" . $_POST['name'] . "', '" . $_POST['mail'] . "', " . $uage . ", '" . $hashed_pass . ")";
 		$sql_query = "INSERT INTO accounts VALUES " . $sql_values;
 		sm_db_exec($sql_query);
 		// The user MUST verify their mail
@@ -52,13 +67,25 @@ if ($_POST['name']) {
 		$_SESSION['acco'] = $veracccode;
 		mail($_POST['mail'], "Verify your " . $sm_name . "account", "Your " . $sm_name . " account needs verification. Your code is " . $veracccode . ". Return to the verification page and enter the code in.", "From: " . $sm_mail);
 		header("Location: /v.php?ac_stamp=" . time());
+	} else {
+		sm_raise_err("The CAPTCHA was wrong! Sign up again and enter it correctly!");
+		sm_die();
+	}
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta content="text/html; charset=ISO-8859-1" http-enquiv="content-type" />
-<title><?php print $sm_name; ?> - Register</title>
-</head>
-<body>
+<?php print_header(); ?>
+
+<form action="/r.php" method="POST">
+Your name: <input name="name" /><br />
+Your birthday: mm:<input name="umon"/>dd:<input name="uday"/>yy:<input name="uyea"/><br/>
+Your password: <input type="password" name="pass"/><br/>
+(Wondering about gender? We're gender-netural.)<br/>
+CAPTCHA test:<br/>
+<img src="captcha.php" alt="CAPTCHA" /><br/>
+Are you disabled? <a href="/contact.php">Contact us for an account.</a><br/>
+<input name="human"/>
+<input type="submit" value="Hitch me up, baby!"/>
+</form>
+
+<?php print_header(); ?>

@@ -13,6 +13,7 @@ function _randstr($length = 6) {
 }
 
 $ra = _randstr();
+$_SESSION['vercode'] = $ra;
 
 $im = imagecreate(75, 30);
 $bg = imagecolorallocate($im, 255, 255, 255);

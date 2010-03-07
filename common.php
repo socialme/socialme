@@ -1,6 +1,6 @@
 <?php
 
-require("config.php");
+include("config.php");
 
 function print_header($area = "Home")
 {
@@ -36,4 +36,35 @@ function sm_die() {
 	exit;
 }
 
+// Internal function used by sm_germ-x
+function __cleanInput($input) {
+ 
+$search = array(
+    '@<script[^>]*?>.*?</script>@si',   // Strip out javascript
+    '@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
+    '@<style[^>]*?>.*?</style>@siU',    // Strip style tags properly
+    '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments
+);
+ 
+    $output = preg_replace($search, '', $input);
+    return $output;
+}
+
+function sm_germ-x($input) {
+    if (is_array($input)) {
+        foreach($input as $var=>$val) {
+            $output[$var] = sm_germ-x($val);
+        }
+    }
+    else {
+        if (get_magic_quotes_gpc()) {
+            $input = stripslashes($input);
+        }
+        $input  = cleanInput($input);
+	// We could include db.php, but everybody won't run MySQL so...
+        $output = addslashes($input);
+    }
+    return $output;
+}
 ?>
+
