@@ -2,6 +2,8 @@
 
 include("config.php");
 
+session_start();
+
 function print_header($area = "Home")
 {
 	print '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
@@ -12,6 +14,16 @@ function print_header($area = "Home")
 	print '<!--[if lt IE 8]>';
 	print '<script type="text/javascript">for (x in document.write) { document.write(x); }</script>';
 	print '<![endif]-->';
+	if ($sm_logo) {
+		echo "<img src='$sm_logo' alt='$sm_name' />";
+	} else {
+		echo "<b>$sm_name</b>";
+	}
+	if ($_SESSION['sm_id']) {
+		echo ' | <a href="index.php">home</a> | <a href="profile.php?me=yes>profile</a><br/>";
+	} else {
+		echo ' | <a href="login.php">login</a><br/>';
+	}
 }
 
 function print_footer()

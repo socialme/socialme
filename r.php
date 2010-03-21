@@ -16,6 +16,8 @@ if ($_POST['name']) {
 	}
 	if ($_SESSION['vercode'] == $_POST['human']) {
 		// Clean $_POST's dirty hands
+		// But save $_POST['mail'] for mail()
+		$uma = $_POST['mail'];
 		sm_germ-x($_POST);
 		// Get the current date.
 		// Users have to be 13+.
@@ -63,9 +65,9 @@ if ($_POST['name']) {
 		$sql_query = "INSERT INTO accounts VALUES " . $sql_values;
 		sm_db_exec($sql_query);
 		// The user MUST verify their mail
-		$veracccode = md5(mt_rand() + time());
-		$_SESSION['acco'] = $veracccode;
-		mail($_POST['mail'], "Verify your " . $sm_name . "account", "Your " . $sm_name . " account needs verification. Your code is " . $veracccode . ". Return to the verification page and enter the code in.", "From: " . $sm_mail);
+		$veracccode = md5(sha1(crc32(mt_rand() + time())));
+		$_SESSION['veracccode'] = $veracccode;
+		mail($uma, "Verify your " . $sm_name . "account", "Your " . $sm_name . " account needs verification. Your code is " . $veracccode . ". Return to the verification page and enter the code in.", "From: " . $sm_mail);
 		header("Location: /v.php?ac_stamp=" . time());
 	} else {
 		sm_raise_err("The CAPTCHA was wrong! Sign up again and enter it correctly!");
