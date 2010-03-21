@@ -3,6 +3,7 @@
 include('config.php');
 include('db.php');
 include('common.php');
+include('mollom.php');
 
 sm_init_db();
 
@@ -14,7 +15,7 @@ if ($_POST['name']) {
 		sm_raise_err("You are not old enough. You must be 13+.");
 		sm_die();
 	}
-	if ($_SESSION['vercode'] == $_POST['human']) {
+	if ($_SESSION['vercode']) {// == $_POST['human']) {
 		// Clean $_POST's dirty hands
 		// But save $_POST['mail'] for mail()
 		$uma = $_POST['mail'];
@@ -83,10 +84,10 @@ Your name: <input name="name" /><br />
 Your birthday: mm:<input name="umon"/>dd:<input name="uday"/>yy:<input name="uyea"/><br/>
 Your password: <input type="password" name="pass"/><br/>
 (Wondering about gender? We're gender-netural.)<br/>
-CAPTCHA test:<br/>
-<img src="captcha.php" alt="CAPTCHA" /><br/>
-Are you disabled? <a href="/contact.php">Contact us for an account.</a><br/>
+<!--
+Disabled for Mollom integration
 <input name="human"/>
+-->
 <input type="submit" value="Hitch me up, baby!"/>
 </form>
 
